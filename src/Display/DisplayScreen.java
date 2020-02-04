@@ -34,7 +34,7 @@ public class DisplayScreen {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setBackground(Color.black);
+        frame.setBackground(Color.BLACK);
 
         try {
             frame.setIconImage(ImageIO.read(new File(iconURL)));
