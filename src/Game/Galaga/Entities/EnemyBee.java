@@ -12,7 +12,7 @@ public class EnemyBee extends BaseEntity {
     boolean justSpawned=true,attacking=false, positioned=false,hit=false,centered = false;
     Animation idle,turn90Left;
     int spawnPos;//0 is left 1 is top, 2 is right, 3 is bottom
-    int formationX,formationY,speed,centerCoolDown=60;
+    int formationX,formationY,speed,centerCoolDown=60;//The enemy stay in the center for a bit.
     int timeAlive=0;
     public EnemyBee(int x, int y, int width, int height, Handler handler,int row, int col) {
         super(x, y, width, height, Images.galagaEnemyBee[0], handler);
@@ -27,8 +27,9 @@ public class EnemyBee extends BaseEntity {
         speed = 4;
         formationX=(handler.getWidth()/4)+(col*((handler.getWidth()/2)/8))+8;
         formationY=(row*(handler.getHeight()/10))+8;
+        
     }
-
+   
     private void spawn() {
         spawnPos = random.nextInt(4);
         switch (spawnPos){

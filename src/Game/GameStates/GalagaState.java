@@ -24,8 +24,9 @@ public class GalagaState extends State {
     public GalagaState(Handler handler){
         super(handler);
         refresh();
-        entityManager = new EntityManager(new PlayerShip(handler.getWidth()/2-64,handler.getHeight()- handler.getHeight()/7,64,64,Images.galagaPlayer[0],handler));
+        entityManager = new EntityManager(new PlayerShip(handler.getWidth()/2-64,handler.getHeight()- handler.getHeight()/7,64,64,Images.galagaPlayer[0],handler));//Handle things that are dynamic. 
         titleAnimation = new Animation(256,Images.galagaLogo);
+        
     }
 
 
@@ -64,7 +65,7 @@ public class GalagaState extends State {
         Random random = new Random(System.nanoTime());
 
         for (int j = 1;j < random.nextInt(15)+60;j++) {
-            switch (random.nextInt(4)) {
+            switch (random.nextInt(6)) {
                 case 0:
                     g.setColor(Color.RED);
                     break;

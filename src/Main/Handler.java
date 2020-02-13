@@ -4,10 +4,14 @@ import Display.DisplayScreen;
 import Game.GameStates.*;
 import Input.KeyManager;
 import Input.MouseManager;
+import Resources.Animation;
+import Resources.Images;
 import Resources.MusicHandler;
 import Resources.ScoreManager;
 
 import javax.sound.sampled.Clip;
+
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 
@@ -26,6 +30,7 @@ public class Handler {
     private ArrayList<Clip> effects;
     private State lastState;
     public static boolean DEBUG = true;
+    
 
     public Handler(GameSetUp game){
         this.game = game;
@@ -103,7 +108,7 @@ public class Handler {
     public Clip getBackgroundMusic() {
         return backgroundMusic;
     }
-
+    
     public void setBackgroundMusic(Clip backgroundMusic) {
         this.backgroundMusic = backgroundMusic;
     }
@@ -139,4 +144,5 @@ public class Handler {
     public void setLastState(State lastState) {
         this.lastState = lastState;
     }
+    
 }

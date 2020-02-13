@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
  */
 public class PlayerShip extends BaseEntity{
 
-    private int health = 3,attackCooldown = 30,speed =6,destroyedCoolDown = 60*7;
+    private int health = 3,attackCooldown = 30,speed =6,destroyedCoolDown = 60*3;
     private boolean attacking = false, destroyed = false;
     private Animation deathAnimation;
 
@@ -30,7 +30,7 @@ public class PlayerShip extends BaseEntity{
         super.tick();
         if (destroyed){
             if (destroyedCoolDown<=0){
-                destroyedCoolDown=60*7;
+                destroyedCoolDown=60*3;
                 destroyed=false;
                 deathAnimation.reset();
                 bounds.x=x;
@@ -53,8 +53,15 @@ public class PlayerShip extends BaseEntity{
                 handler.getGalagaState().entityManager.entities.add(new PlayerLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
 
             }
-            if (handler.getKeyManager().left) {
+            if (handler.getKeyManager().left) {//Here a can make that the ship dosen't go outside the display.
                 x -= (speed);
+            }
+            if (handler.getKeyManager().deadkey) {
+                destroyed = true;
+                health -= 1;
+            }
+            if (handler.getKeyManager().healthkey) {
+            	health += 1;
             }
             if (handler.getKeyManager().right) {
                 x += (speed);

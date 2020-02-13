@@ -13,8 +13,11 @@ public class KeyManager implements KeyListener {
 	private boolean[] keys,justPressed,cantPress;
 	public boolean up=false, down=false, left=false, right=false;
 	public boolean pausebutt=false;
-
-
+	public boolean healthkey=false; // Code added
+	public boolean deadkey = false; // Code added 
+	public boolean enemyspwan = false; //Code added
+	public boolean specialenemy = false; // Code added
+	
 	public KeyManager(){
 
 		keys = new boolean[256];
@@ -43,7 +46,10 @@ public class KeyManager implements KeyListener {
 		right = keys[KeyEvent.VK_D] || keys[KeyEvent.VK_RIGHT];
 
 		pausebutt = keys[KeyEvent.VK_ESCAPE];
-
+		healthkey = keys[KeyEvent.VK_H]; // Code added
+		deadkey = keys[KeyEvent.VK_N]; //Code added  
+		enemyspwan = keys[KeyEvent.VK_P]; //Code added
+		specialenemy = keys[KeyEvent.VK_O]; //Code added
 	}
 
 	@Override

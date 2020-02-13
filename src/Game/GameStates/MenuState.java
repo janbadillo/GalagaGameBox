@@ -32,7 +32,7 @@ public class MenuState extends State {
     public void render(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0,0,handler.getWidth(),handler.getHeight());
-        g.drawImage(Images.titleScreenBackground,0,0,handler.getWidth(),handler.getHeight(),null);
+        g.drawImage(Images.titleScreenBackground,0,0,handler.getWidth(),handler.getHeight(),null);//You need to pull null.
         uiManager.Render(g);
 
     }

@@ -123,8 +123,8 @@ public class GameSetUp implements Runnable {
 
             if(delta >= 1){
                 //re-renders and ticks the game around 60 times per second
-                tick();
-                render();
+                tick(); //Process all the calculations.
+                render(); //Draws everything
                 ticks++;
                 delta--;
             }
@@ -144,15 +144,15 @@ public class GameSetUp implements Runnable {
         keyManager.tick();
 
 
-        if (keyManager.keyJustPressed(KeyEvent.VK_F11)){
+        if (keyManager.keyJustPressed(KeyEvent.VK_F11)){//Will work only ones after it is pressed and soltado.
             handler.setFullScreen(display.flipFullScreen());
         }
 
         if (keyManager.keyJustPressed(KeyEvent.VK_R)){
-            handler.getState().refresh();
+            handler.getState().refresh(); 
         }
 
-        if (keyManager.keyJustPressed(KeyEvent.VK_M)){
+        if (keyManager.keyJustPressed(KeyEvent.VK_M)){//Mute or unmute music.
             if (handler.isMute()){
                 handler.getMusicHandler().resumeMusic();
             }else{
@@ -160,7 +160,10 @@ public class GameSetUp implements Runnable {
             }
         }
 
-
+        if (keyManager.keyJustPressed(KeyEvent.VK_W)) {
+//      	handler.getHealth(); //Code added
+     
+        }
         //game states are the menus
         if(State.getState() != null)
             State.getState().tick();
@@ -172,9 +175,9 @@ public class GameSetUp implements Runnable {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
-        Graphics g = bs.getDrawGraphics();
+        Graphics g = bs.getDrawGraphics();//If a want to draw something is g.
         //Clear Screen
-        g.clearRect(0, 0, width, height);
+        g.clearRect(0, 0, width, height); //Erase all the older windows, to avoid laging. 
 
         //Draw Here!
         if(State.getState() != null) {
