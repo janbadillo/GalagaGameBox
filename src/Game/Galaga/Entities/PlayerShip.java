@@ -53,8 +53,17 @@ public class PlayerShip extends BaseEntity{
                 handler.getGalagaState().entityManager.entities.add(new PlayerLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
 
             }
-            if (handler.getKeyManager().left) {//Here a can make that the ship dosen't go outside the display.
-                x -= (speed);
+            if (handler.getKeyManager().left) {
+            	if (x < handler.getWidth()/2 - handler.getWidth()/4 + 3) {}
+            	else {
+            		x -= (speed);
+            	}
+            }
+            if (handler.getKeyManager().right) {
+            	if (x > handler.getWidth()*3/4 - 69) {}
+            	else {
+            		x += (speed);
+            	}
             }
             if (handler.getKeyManager().deadkey) {
                 destroyed = true;
@@ -63,9 +72,7 @@ public class PlayerShip extends BaseEntity{
             if (handler.getKeyManager().healthkey) {
             	health += 1;
             }
-            if (handler.getKeyManager().right) {
-                x += (speed);
-            }
+            
 
             bounds.x = x;
         }

@@ -53,6 +53,13 @@ public class EnemyBee extends BaseEntity {
         bounds.x=x;
         bounds.y=y;
     }
+    
+    public String get_pos()
+    {
+    	String x = String.valueOf(this.col);
+    	String y = String.valueOf(this.row);
+    	return x+y;
+    }
 
     @Override
     public void tick() {

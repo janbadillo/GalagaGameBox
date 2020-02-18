@@ -1,5 +1,7 @@
 package Game.GameStates;
 
+import Game.Galaga.Entities.BaseEntity;
+import Game.Galaga.Entities.EnemyBee;
 import Game.Galaga.Entities.EntityManager;
 import Game.Galaga.Entities.PlayerShip;
 import Main.Handler;
@@ -29,12 +31,64 @@ public class GalagaState extends State {
         
     }
 
-
+    ///////////////////ADDED//////////////////////
+    public boolean overlap(BaseEntity sprite)
+    {
+    	boolean col;
+    
+    	for(BaseEntity entity: entityManager.entities )
+		{
+			if(entity instanceof EnemyBee && sprite instanceof EnemyBee)
+			{
+				col = ((EnemyBee) entity).get_pos().contentEquals(((EnemyBee) sprite).get_pos());
+				if(col)
+					return true;
+			}
+		}
+    	return false;
+    }
+    /////////^^^^^^^^^^^^^^^^^^^^^^ADDED^^^^^^^^^^^^^^^^^^^^^///////
+    
     @Override
     public void tick() {
+    	
         if (Mode.equals("Stage")){
             if (startCooldown<=0) {
                 entityManager.tick();
+                ////////////////ADDED THIS///////////////////////////    
+                if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_P)){
+                	Random random = new Random();
+                	int col[] = {0,1,2,3,4,5,6,7};
+                	int row[] = {3,4};
+                	EnemyBee test; 
+                	do
+                	{
+    	            	int rando_col = random.nextInt(8);
+    	            	int rando_row = random.nextInt(2);
+    	            	test = new EnemyBee(1,1,50,50,handler,row[rando_row],col[rando_col]); 
+    		        	if(!overlap(test)) {
+    		            	entityManager.entities.add(test);
+    		        	}
+                	}while(!overlap(test));
+                }
+                
+                if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_O)){
+                	Random random = new Random();
+                	int col[] = {0,1,2,3,4,5,6,7};
+                	int row[] = {0,1,2};
+                	EnemyBee test; 
+                	do
+                	{
+    	            	int rando_col = random.nextInt(8);
+    	            	int rando_row = random.nextInt(3);
+    	            	test = new EnemyBee(1,1,50,50,handler,row[rando_row],col[rando_col]); 
+    		        	if(!overlap(test)) {
+    		            	entityManager.entities.add(test);
+    		        	}
+                	}while(overlap(test));
+                }
+                ///////////////////////////////////////////////////////////////    
+                
             }else{
                 startCooldown--;
             }
