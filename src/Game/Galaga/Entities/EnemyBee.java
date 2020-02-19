@@ -132,6 +132,8 @@ public class EnemyBee extends BaseEntity {
                     if (Point.distance(x, y, formationX, formationY) > speed) {//reach center of screen
                         if (Math.abs(y-formationY)>6) {
                             y -= speed;
+                        } else {
+                            y += speed;
                         }
                         if (Point.distance(x,y,formationX,y)>speed/2) {
                             if (x >formationX) {
