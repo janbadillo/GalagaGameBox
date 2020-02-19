@@ -132,9 +132,8 @@ public class EnemyBee extends BaseEntity {
                     if (Point.distance(x, y, formationX, formationY) > speed) {//reach center of screen
                         if (Math.abs(y-formationY)>6) {
                             y -= speed;
-                        } else {
-                            y += speed;
                         }
+                    }
                         if (Point.distance(x,y,formationX,y)>speed/2) {
                             if (x >formationX) {
                                 x -= speed;
@@ -146,7 +145,8 @@ public class EnemyBee extends BaseEntity {
                         positioned =true;
                         justSpawned = false;
                     }
-                }else{
+                }
+        }  else{
                     centerCoolDown--;
                 }
                 if (timeAlive>=60*60*2){
@@ -154,8 +154,7 @@ public class EnemyBee extends BaseEntity {
                     //60 ticks in a second, times 60 is a minute, times 2 is a minute
                     damage(new PlayerLaser(0,0,0,0,Images.galagaPlayerLaser,handler,handler.getGalagaState().entityManager));
                 }
-            }
-        }else if (positioned){
+        else if (positioned){
 
         }else if (attacking){
 
