@@ -122,7 +122,7 @@ public class EnemyBee extends BaseEntity {
                     //60 ticks in a second, times 60 is a minute, times 2 is a minute
                     damage(new PlayerLaser(0,0,0,0,Images.galagaPlayerLaser,handler,handler.getGalagaState().entityManager));
                 }
-
+                
             }else {//move to formation
                 if (!centered){
                     centered = true;
@@ -146,6 +146,7 @@ public class EnemyBee extends BaseEntity {
                         justSpawned = false;
                     }
                 }
+           
         }  else{
                     centerCoolDown--;
                 }

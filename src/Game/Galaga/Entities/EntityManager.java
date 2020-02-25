@@ -15,7 +15,7 @@ public class EntityManager {
         entities = new ArrayList<>();
         this.playerShip = playerShip;
     }
-
+    
     public void tick(){
         playerShip.tick();
         ArrayList<BaseEntity> toRemove = new ArrayList<>();
@@ -32,15 +32,15 @@ public class EntityManager {
         for (BaseEntity toErase:toRemove){
             entities.remove(toErase);
         }
-
+        
     }
-
+   
     public void render(Graphics g){
         for (BaseEntity entity: entities){
             entity.render(g);
         }
         playerShip.render(g);
-
+        //enemyBee.render(g);
     }
 
 }
