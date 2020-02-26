@@ -11,10 +11,12 @@ public class PlayerLaser extends BaseEntity {
 
     EntityManager enemies;
     int speed = 6;
+   
 
     public PlayerLaser(int x, int y, int width, int height, BufferedImage sprite, Handler handler,EntityManager enemies) {
         super(x, y, width, height, sprite, handler);
         this.enemies=enemies;
+  
     }
 
     @Override
@@ -29,6 +31,7 @@ public class PlayerLaser extends BaseEntity {
                 }
                 if (enemy.bounds.intersects(bounds)) {
                     enemy.damage(this);
+                   
                 }
             }
         }

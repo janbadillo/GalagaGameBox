@@ -145,9 +145,13 @@ public class GalagaState extends State {
             g.setColor(Color.MAGENTA);//RED
             g.setFont(new Font("TimesRoman", Font.PLAIN, 62));
             g.drawString("HIGH",handler.getWidth()-handler.getWidth()/4,handler.getHeight()/16);
-            g.drawString("SCORE",handler.getWidth()-handler.getWidth()/4+handler.getWidth()/48,handler.getHeight()/8);
+            g.drawString("SCORE:",handler.getWidth()-handler.getWidth()/4+handler.getWidth()/48,handler.getHeight()/8);
             g.setColor(Color.MAGENTA);//WHITE
             g.drawString(String.valueOf(handler.getScoreManager().getGalagaHighScore()),handler.getWidth()-handler.getWidth()/4+handler.getWidth()/48,handler.getHeight()/5);
+            g.setColor(Color.RED);//RED
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 32));
+            g.drawString("CURRENT:",handler.getWidth()-handler.getWidth()/2,handler.getHeight()/16);
+            g.drawString(String.valueOf(handler.getScoreManager().getGalagaCurrentScore()),handler.getWidth()-handler.getWidth()/3+handler.getWidth()/48,handler.getHeight()/16);
             for (int i = 0; i< entityManager.playerShip.getHealth();i++) {
                 g.drawImage(Images.galagaPlayer[0], (handler.getWidth() - handler.getWidth() / 4 + handler.getWidth() / 48) + ((entityManager.playerShip.width*2)*i), handler.getHeight()-handler.getHeight()/4, handler.getWidth() / 18, handler.getHeight() / 18, null);
             }
@@ -164,9 +168,11 @@ public class GalagaState extends State {
 
             g.setColor(Color.MAGENTA);//RED
             g.drawString("HIGH-SCORE:",handler.getWidth()/2-handler.getWidth()/18,32);
+           
 
             g.setColor(Color.MAGENTA);//WHITE
             g.drawString(String.valueOf(handler.getScoreManager().getGalagaHighScore()),handler.getWidth()/2-32,64);
+        
 
             g.drawImage(titleAnimation.getCurrentFrame(),handler.getWidth()/2-(handler.getWidth()/12),handler.getHeight()/2-handler.getHeight()/3,handler.getWidth()/6,handler.getHeight()/7,null);
 

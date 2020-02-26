@@ -40,7 +40,6 @@ public class EntityManager {
             entity.render(g);
         }
         playerShip.render(g);
-        //enemyBee.render(g);
     }
 
 }

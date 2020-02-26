@@ -27,7 +27,6 @@ public class EnemyBee extends BaseEntity {
         speed = 4;
         formationX=(handler.getWidth()/4)+(col*((handler.getWidth()/2)/8))+8;
         formationY=(row*(handler.getHeight()/10))+8;
-        
     }
    
     private void spawn() {
@@ -73,7 +72,6 @@ public class EnemyBee extends BaseEntity {
             enemyDeath.tick();
         }
         if (justSpawned){
-            timeAlive++;
             if (!centered && Point.distance(x,y,handler.getWidth()/2,handler.getHeight()/2)>speed){//reach center of screen
                 switch (spawnPos){
                     case 0://left
@@ -117,23 +115,16 @@ public class EnemyBee extends BaseEntity {
                         }
                         break;
                 }
-                if (timeAlive>=60*60*2){
-                    //more than 2 minutes in this state then die
-                    //60 ticks in a second, times 60 is a minute, times 2 is a minute
-                    damage(new PlayerLaser(0,0,0,0,Images.galagaPlayerLaser,handler,handler.getGalagaState().entityManager));
-                }
-                
+
             }else {//move to formation
                 if (!centered){
                     centered = true;
-                    timeAlive = 0;
                 }
                 if (centerCoolDown<=0){
                     if (Point.distance(x, y, formationX, formationY) > speed) {//reach center of screen
                         if (Math.abs(y-formationY)>6) {
                             y -= speed;
                         }
-                    }
                         if (Point.distance(x,y,formationX,y)>speed/2) {
                             if (x >formationX) {
                                 x -= speed;
@@ -141,21 +132,13 @@ public class EnemyBee extends BaseEntity {
                                 x += speed;
                             }
                         }
-                    }else{
-                        positioned =true;
-                        justSpawned = false;
                     }
-                }
-           
-        }  else{
+                }else{
                     centerCoolDown--;
                 }
-                if (timeAlive>=60*60*2){
-                    //more than 2 minutes in this state then die
-                    //60 ticks in a second, times 60 is a minute, times 2 is a minute
-                    damage(new PlayerLaser(0,0,0,0,Images.galagaPlayerLaser,handler,handler.getGalagaState().entityManager));
-                }
-        else if (positioned){
+
+            }
+        }else if (positioned){
 
         }else if (attacking){
 
@@ -182,8 +165,15 @@ public class EnemyBee extends BaseEntity {
         super.damage(damageSource);
         if (damageSource instanceof PlayerLaser){
             hit=true;
+            int score = 0;
+            score = score + 100;
+            //handler.getScoreManager().getGalagaCurrentScore(score);
             handler.getMusicHandler().playEffect("explosion.wav");
             damageSource.remove = true;
+            
         }
     }
-}
+    
+    	
+    }
+
