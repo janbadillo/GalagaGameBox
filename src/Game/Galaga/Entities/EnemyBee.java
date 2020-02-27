@@ -65,8 +65,9 @@ public class EnemyBee extends BaseEntity {
         super.tick();
         idle.tick();
         if (hit){
-            if (enemyDeath.end){
+            if (enemyDeath.end) {
                 remove = true;
+                handler.getScoreManager().setSumScore();
                 return;
             }
             enemyDeath.tick();
@@ -165,12 +166,8 @@ public class EnemyBee extends BaseEntity {
         super.damage(damageSource);
         if (damageSource instanceof PlayerLaser){
             hit=true;
-            int score = 0;
-            score = score + 100;
-            //handler.getScoreManager().getGalagaCurrentScore(score);
             handler.getMusicHandler().playEffect("explosion.wav");
             damageSource.remove = true;
-            
         }
     }
     

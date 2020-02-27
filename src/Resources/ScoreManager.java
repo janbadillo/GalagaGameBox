@@ -29,6 +29,11 @@ public class ScoreManager {
     public int getGalagaCurrentScore() {
         return galagaCurrentScore;
     }
+    
+    public void setSumScore() {
+        galagaCurrentScore += 100;
+    }
+    
 
     public void setGalagaCurrentScore(int galagaCurrentScore) {
         this.galagaCurrentScore = galagaCurrentScore;

@@ -30,11 +30,24 @@ public class Handler {
     private ArrayList<Clip> effects;
     private State lastState;
     public static boolean DEBUG = true;
-    
+    private boolean gameover = false;
 
-    public Handler(GameSetUp game){
+
+	public Handler(GameSetUp game){
         this.game = game;
     }
+	
+    public boolean getGameover() {
+		return gameover;
+	}
+
+	public void setGameoverFalse() {
+		this.gameover = false;
+	}
+	
+	public void setGameoverTrue() {
+		this.gameover = true;
+	}
 
     public int getWidth(){
         return getDisplayScreen().getCanvas().getWidth();

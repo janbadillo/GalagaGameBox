@@ -1,5 +1,6 @@
 package Game.Galaga.Entities;
 
+import Game.GameStates.GalagaState;
 import Main.Handler;
 import Resources.Animation;
 import Resources.Images;
@@ -13,14 +14,13 @@ import java.awt.image.BufferedImage;
  */
 public class PlayerShip extends BaseEntity{
 
-    private int health = 3,attackCooldown = 30,speed =6,destroyedCoolDown = 60*3;
+    private int health = 3,attackCooldown = 30,speed =6,destroyedCoolDown = 60*3, gameoverCooldown = 60*4;
     private boolean attacking = false, destroyed = false;
     private Animation deathAnimation;
 
 
      public PlayerShip(int x, int y, int width, int height, BufferedImage sprite, Handler handler) {
         super(x, y, width, height, sprite, handler);
-
         deathAnimation = new Animation(256,Images.galagaPlayerDeath);
 
     }
@@ -28,6 +28,7 @@ public class PlayerShip extends BaseEntity{
     @Override
     public void tick() {
         super.tick();
+   
         if (destroyed){
             if (destroyedCoolDown<=0){
                 destroyedCoolDown=60*3;
@@ -42,7 +43,7 @@ public class PlayerShip extends BaseEntity{
             if (attacking) {
                 if (attackCooldown <= 0) {
                     attacking = false;
-                } else {
+                }else {
                     attackCooldown--;
                 }
             }
@@ -54,13 +55,13 @@ public class PlayerShip extends BaseEntity{
 
             }
             if (handler.getKeyManager().left) {
-            	if (x < handler.getWidth()/2 - handler.getWidth()/4 + 3) {}
+            	if (x < handler.getWidth()/2 - handler.getWidth()/4 + 23) {}
             	else {
             		x -= (speed);
             	}
             }
             if (handler.getKeyManager().right) {
-            	if (x > handler.getWidth()*3/4 - 69) {}
+            	if (x > handler.getWidth()*3/4 - 89) {}
             	else {
             		x += (speed);
             	}
@@ -81,8 +82,22 @@ public class PlayerShip extends BaseEntity{
 
     @Override
     public void render(Graphics g) {
+	   	 if(health == 0) {
+	  		if (gameoverCooldown <= 0) {
+	  			gameoverCooldown = 30*4;
+	  			handler.setGameoverTrue();
+	     		health = 3;
+	  		}else {  	
+	   		g.setColor(Color.RED);
+	         g.setFont(new Font("TimesRoman", Font.PLAIN, 92));
+	  		g.drawString("GAME  OVER",handler.getWidth()/2-handler.getWidth()/8,handler.getHeight()/2);
+	   		gameoverCooldown --;
+	   		}
+	 	 }
          if (destroyed){
-             if (deathAnimation.end){
+
+             if (deathAnimation.end && health >= 1){
+
                  g.drawString("READY",handler.getWidth()/2-handler.getWidth()/12,handler.getHeight()/2);
              }else {
                  g.drawImage(deathAnimation.getCurrentFrame(), x, y, width, height, null);

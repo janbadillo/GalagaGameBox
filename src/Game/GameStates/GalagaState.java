@@ -18,7 +18,7 @@ import java.util.Random;
 public class GalagaState extends State {
 
     public EntityManager entityManager;
-    public String Mode = "Menu";
+    public static String Mode = "Menu";
     private Animation titleAnimation;
     public int selectPlayers = 1;
     public int startCooldown = 60*7;//seven seconds for the music to finish
@@ -34,14 +34,13 @@ public class GalagaState extends State {
     ///////////////////ADDED//////////////////////
     public boolean overlap(BaseEntity sprite)
     {
-    	boolean col;
     
     	for(BaseEntity entity: entityManager.entities )
 		{
 			if(entity instanceof EnemyBee && sprite instanceof EnemyBee)
 			{
-				col = ((EnemyBee) entity).get_pos().contentEquals(((EnemyBee) sprite).get_pos());
-				if(col)
+				boolean check = ((EnemyBee) entity).get_pos().contentEquals(((EnemyBee) sprite).get_pos());
+				if(check)
 					return true;
 			}
 		}
@@ -51,8 +50,17 @@ public class GalagaState extends State {
     
     @Override
     public void tick() {
+    	if (handler.getGameover()) {
+    		
+    		handler.getScoreManager().setGalagaCurrentScore(0);
+    		Mode = "Menu";
+    		handler.setGameoverFalse();
+    	}
     	
         if (Mode.equals("Stage")){
+        	if (handler.getScoreManager().getGalagaCurrentScore() > handler.getScoreManager().getGalagaHighScore()) {
+        		handler.getScoreManager().setGalagaHighScore(handler.getScoreManager().getGalagaCurrentScore());
+        	}
             if (startCooldown<=0) {
                 entityManager.tick();
                 ////////////////ADDED THIS///////////////////////////    
@@ -69,7 +77,7 @@ public class GalagaState extends State {
     		        	if(!overlap(test)) {
     		            	entityManager.entities.add(test);
     		        	}
-                	}while(!overlap(test));
+                	} while(!overlap(test)); // must fix this loop
                 }
                 
                 if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_O)){
@@ -92,7 +100,8 @@ public class GalagaState extends State {
             }else{
                 startCooldown--;
             }
-        }else{
+        }
+        if(Mode.equals("Menu")){
             titleAnimation.tick();
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)){
                 selectPlayers=1;
@@ -193,8 +202,7 @@ public class GalagaState extends State {
 
     @Override
     public void refresh() {
-
-
-
+    	
     }
+    
 }
