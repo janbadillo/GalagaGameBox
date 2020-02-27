@@ -24,7 +24,7 @@ public class EnemyBee extends BaseEntity {
         idle = new Animation(512,idleAnimList);
         turn90Left = new Animation(128,Images.galagaEnemyBee);
         spawn();
-        speed = 4;
+        speed = 7;
         formationX=(handler.getWidth()/4)+(col*((handler.getWidth()/2)/8))+8;
         formationY=(row*(handler.getHeight()/10))+8;
     }
@@ -73,7 +73,7 @@ public class EnemyBee extends BaseEntity {
             enemyDeath.tick();
         }
         if (justSpawned){
-            if (!centered && Point.distance(x,y,handler.getWidth()/2,handler.getHeight()/2)>speed){//reach center of screen
+            if (!centered && Point.distance(x,y,handler.getWidth()/2,handler.getHeight()/2)>speed + 1){//reach center of screen
                 switch (spawnPos){
                     case 0://left
                         x+=speed;

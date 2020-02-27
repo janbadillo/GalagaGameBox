@@ -21,7 +21,7 @@ public class GalagaState extends State {
     public static String Mode = "Menu";
     private Animation titleAnimation;
     public int selectPlayers = 1;
-    public int startCooldown = 60*7;//seven seconds for the music to finish
+    public int startCooldown = 60*3;//seven seconds for the music to finish
 
     public GalagaState(Handler handler){
         super(handler);
@@ -32,7 +32,7 @@ public class GalagaState extends State {
     }
 
     ///////////////////ADDED//////////////////////
-    public boolean overlap(BaseEntity sprite)
+    public boolean beeOverlap(BaseEntity sprite)
     {
     
     	for(BaseEntity entity: entityManager.entities )
@@ -46,6 +46,21 @@ public class GalagaState extends State {
 		}
     	return false;
     }
+    
+//    public boolean bossOverlap(BaseEntity sprite)
+//    {
+//    
+//    	for(BaseEntity entity: entityManager.entities )
+//		{
+//			if(entity instanceof BeeBoss && sprite instanceof BeeBoss)
+//			{
+//				boolean check = ((BeeBoss) entity).get_pos().contentEquals(((BeeBoss) sprite).get_pos());
+//				if(check)
+//					return true;
+//			}
+//		}
+//    	return false;
+//    }
     /////////^^^^^^^^^^^^^^^^^^^^^^ADDED^^^^^^^^^^^^^^^^^^^^^///////
     
     @Override
@@ -64,37 +79,62 @@ public class GalagaState extends State {
             if (startCooldown<=0) {
                 entityManager.tick();
                 ////////////////ADDED THIS///////////////////////////    
-                if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_P)){
+                if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_P)){ // Waits for P to be pressed for Bee to spawn
+
+                	EnemyBee test;
                 	Random random = new Random();
                 	int col[] = {0,1,2,3,4,5,6,7};
                 	int row[] = {3,4};
-                	EnemyBee test; 
                 	do
                 	{
     	            	int rando_col = random.nextInt(8);
     	            	int rando_row = random.nextInt(2);
     	            	test = new EnemyBee(1,1,50,50,handler,row[rando_row],col[rando_col]); 
-    		        	if(!overlap(test)) {
+    		        	if(!beeOverlap(test)) {
     		            	entityManager.entities.add(test);
+    		            	break;
+    		        	} else {
+    		        		int counter = 0;
+    		        		for(BaseEntity entity: entityManager.entities ){
+    		        			
+    		        			if (entity instanceof EnemyBee) {
+    		        				counter ++;
+    		        			}
+    		        		}
+    		        		if (counter >= 16) {
+    		        			break;
+    		        		}
     		        	}
-                	} while(!overlap(test)); // must fix this loop
+                	} while(beeOverlap(test)); // must fix this loop
                 }
                 
-                if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_O)){
-                	Random random = new Random();
-                	int col[] = {0,1,2,3,4,5,6,7};
-                	int row[] = {0,1,2};
-                	EnemyBee test; 
-                	do
-                	{
-    	            	int rando_col = random.nextInt(8);
-    	            	int rando_row = random.nextInt(3);
-    	            	test = new EnemyBee(1,1,50,50,handler,row[rando_row],col[rando_col]); 
-    		        	if(!overlap(test)) {
-    		            	entityManager.entities.add(test);
-    		        	}
-                	}while(overlap(test));
-                }
+//                if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_O)){
+//                	Random random = new Random();
+//                	int col[] = {0,1,2,3,4,5,6,7};
+//                	int row[] = {0,1,2};
+//                	EnemyBee test; 
+//                	do
+//                	{
+//    	            	int rando_col = random.nextInt(8);
+//    	            	int rando_row = random.nextInt(2);
+//    	            	test = new EnemyBee(1,1,50,50,handler,row[rando_row],col[rando_col]); 
+//    		        	if(!newOverlap(test)) {
+//    		            	entityManager.entities.add(test);
+//    		            	break;
+//    		        	} else {
+//    		        		int counter = 0;
+//    		        		for(BaseEntity entity: entityManager.entities ){
+//    		        			
+//    		        			if (entity instanceof EnemyBee) {
+//    		        				counter ++;
+//    		        			}
+//    		        		}
+//    		        		if (counter >= 16) {
+//    		        			break;
+//    		        		}
+//    		        	}
+//                	} while(newOverlap(test));
+//                }
                 ///////////////////////////////////////////////////////////////    
                 
             }else{
