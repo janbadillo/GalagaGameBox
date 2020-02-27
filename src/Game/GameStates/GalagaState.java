@@ -66,7 +66,7 @@ public class GalagaState extends State {
     @Override
     public void tick() {
     	if (handler.getGameover()) {
-    		
+    		entityManager.entities.clear();
     		handler.getScoreManager().setGalagaCurrentScore(0);
     		Mode = "Menu";
     		handler.setGameoverFalse();
@@ -112,13 +112,13 @@ public class GalagaState extends State {
 //                	Random random = new Random();
 //                	int col[] = {0,1,2,3,4,5,6,7};
 //                	int row[] = {0,1,2};
-//                	EnemyBee test; 
+//                	BeeBoss test; 
 //                	do
 //                	{
 //    	            	int rando_col = random.nextInt(8);
 //    	            	int rando_row = random.nextInt(2);
 //    	            	test = new EnemyBee(1,1,50,50,handler,row[rando_row],col[rando_col]); 
-//    		        	if(!newOverlap(test)) {
+//    		        	if(!bossOverlap(test)) {
 //    		            	entityManager.entities.add(test);
 //    		            	break;
 //    		        	} else {
@@ -133,7 +133,7 @@ public class GalagaState extends State {
 //    		        			break;
 //    		        		}
 //    		        	}
-//                	} while(newOverlap(test));
+//                	} while(bossOverlap(test));
 //                }
                 ///////////////////////////////////////////////////////////////    
                 

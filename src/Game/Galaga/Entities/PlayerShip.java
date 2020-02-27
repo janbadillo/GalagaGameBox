@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
  */
 public class PlayerShip extends BaseEntity{
 
-    private int health = 3,attackCooldown = 30,speed =6,destroyedCoolDown = 60*3, gameoverCooldown = 60*4;
+    private int health = 3,attackCooldown = 5,speed =6,destroyedCoolDown = 60*3, gameoverCooldown = 60*4;
     private boolean attacking = false, destroyed = false;
     private Animation deathAnimation;
 
@@ -48,10 +48,26 @@ public class PlayerShip extends BaseEntity{
                 }
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ENTER) && !attacking) {
-                handler.getMusicHandler().playEffect("laser.wav");
-                attackCooldown = 30;
-                attacking = true;
-                handler.getGalagaState().entityManager.entities.add(new PlayerLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
+
+                
+                int lasercount = 0;
+                for(BaseEntity entity: handler.getGalagaState().entityManager.entities){
+                	
+                	if(entity instanceof PlayerLaser){
+                		lasercount ++;
+                	}
+                	if(lasercount >= 2) {
+                		break;
+                	}
+                }
+                if (lasercount < 2) {
+                	handler.getMusicHandler().playEffect("laser.wav");
+                    attackCooldown = 5;
+                    attacking = true;
+                    handler.getGalagaState().entityManager.entities.add(new PlayerLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
+                    
+                }
+                //handler.getGalagaState().entityManager.entities.add(new PlayerLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
 
             }
             if (handler.getKeyManager().left) {
