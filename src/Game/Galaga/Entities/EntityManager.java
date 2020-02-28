@@ -10,25 +10,33 @@ public class EntityManager {
 
     public ArrayList<BaseEntity> entities;
     public PlayerShip playerShip;
-
+    
+    public ArrayList<BaseEntity> Adder;
+    
     public EntityManager(PlayerShip playerShip) {
         entities = new ArrayList<>();
         this.playerShip = playerShip;
+        Adder = new ArrayList<>();
     }
     
     public void tick(){
         playerShip.tick();
         ArrayList<BaseEntity> toRemove = new ArrayList<>();
+        
         for (BaseEntity entity: entities){
             if (entity.remove){
                 toRemove.add(entity);
                 continue;
             }
             entity.tick();
+            
             if (entity.bounds.intersects(playerShip.bounds)){
                 playerShip.damage(entity);
             }
         }
+        for (BaseEntity bop: Adder) entities.add(bop);
+        Adder.clear();
+        
         for (BaseEntity toErase:toRemove){
             entities.remove(toErase);
         }

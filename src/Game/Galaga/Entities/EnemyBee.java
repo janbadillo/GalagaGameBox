@@ -176,6 +176,9 @@ public class EnemyBee extends BaseEntity {
     @Override
     public void damage(BaseEntity damageSource) {
         super.damage(damageSource);
+        if (damageSource instanceof EnemyLaser){
+            return;
+        }
         if (damageSource instanceof PlayerLaser){
             hit=true;
             handler.getMusicHandler().playEffect("explosion.wav");

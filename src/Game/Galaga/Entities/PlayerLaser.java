@@ -26,6 +26,7 @@ public class PlayerLaser extends BaseEntity {
             super.tick();
             y -= speed;
             bounds.y = y;
+            
             for (BaseEntity enemy : enemies.entities) {
                 if (enemy instanceof PlayerShip || enemy instanceof PlayerLaser) {
                     continue;

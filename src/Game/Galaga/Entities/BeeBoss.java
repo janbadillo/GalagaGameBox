@@ -6,7 +6,9 @@ import Resources.Animation;
 import Resources.Images;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class BeeBoss extends BaseEntity {
     int row,col;//row 3-4, col 0-7
@@ -15,6 +17,10 @@ public class BeeBoss extends BaseEntity {
     int spawnPos;//0 is left 1 is top, 2 is right, 3 is bottom
     int formationX,formationY,speed,centerCoolDown=60;//The enemy stay in the center for a bit.
     int timeAlive=0;
+    Random random = new Random();
+    int randomshot = 0;
+    int randomfired = 0;
+    boolean gamesruning = true;
     public BeeBoss(int x, int y, int width, int height, Handler handler,int row, int col) {
         super(x, y, width, height, Images.galagaBeeBoss[0], handler);
         this.row = row;
@@ -140,8 +146,23 @@ public class BeeBoss extends BaseEntity {
                 }
 
             }
+            if((Point.distance(x, y, formationX, formationY) < speed) && centered){
+            	positioned = true;
+            	justSpawned = false;
+            }
         }else if (positioned){
+      
+//     	if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ENTER)) {
+        	if (gamesruning == true) {
+     					randomshot = random.nextInt(60*100);
+     					if (randomshot <= 5) {
+     						handler.getGalagaState().entityManager.Adder.add(new EnemyLaser(this.x + (width / 2), this.y + 3, width / 5, height / 2, Images.galagaEnemyLaser, handler, handler.getGalagaState().entityManager));
+     					}
+     				}
+     				//handler.getGalagaState().entityManager.Adder.add(new EnemyLaser(this.x + (width / 2), this.y + 3, width / 5, height / 2, Images.galagaEnemyLaser, handler, handler.getGalagaState().entityManager));
+     			
         	
+        	//handler.getGalagaState().entityManager.entities.add(new EnemyLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
         }else if (attacking){
 
         }
@@ -164,11 +185,17 @@ public class BeeBoss extends BaseEntity {
 
     @Override
     public void damage(BaseEntity damageSource) {
+    	
         super.damage(damageSource);
+        if (damageSource instanceof EnemyLaser){
+            return;
+        }
         if (damageSource instanceof PlayerLaser){
+        	
             hit=true;
             handler.getMusicHandler().playEffect("explosion.wav");
             damageSource.remove = true;
+            
         }
     }
     

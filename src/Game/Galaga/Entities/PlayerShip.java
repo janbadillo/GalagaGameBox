@@ -38,14 +38,16 @@ public class PlayerShip extends BaseEntity{
     @Override
     public void tick() {
         super.tick();
-        for (BaseEntity enemy : enemies.entities) {
-            if (enemy instanceof EnemyLaser) {
-            	if (enemy.bounds.intersects(this.bounds)) {
-                    destroyed = true;  
-                }
-            }
-            
-        }
+        
+//        for (BaseEntity enemy : enemies.entities) {
+//            if (enemy instanceof EnemyLaser) {
+//            	if (enemy.bounds.intersects(this.bounds)) {
+//                    destroyed = true;
+//                    break;
+//                }
+//            }
+//            
+//        }
    
         if (destroyed){
             if (destroyedCoolDown<=0){
