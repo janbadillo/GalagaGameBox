@@ -1,8 +1,10 @@
 package Game.Galaga.Entities;
 
+
 import Main.Handler;
 import Resources.Animation;
 import Resources.Images;
+//import Game.Galaga.Entities.PlayerShip;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -28,7 +30,6 @@ public class EnemyBee extends BaseEntity {
         formationX=(handler.getWidth()/4)+(col*((handler.getWidth()/2)/8))+8;
         formationY=(row*(handler.getHeight()/10))+8;
     }
-   
     private void spawn() {
         spawnPos = random.nextInt(4);
         switch (spawnPos){
@@ -140,7 +141,18 @@ public class EnemyBee extends BaseEntity {
 
             }
         }else if (positioned){
-
+//        	if (Point.distance(x, y,, formationY) > speed) {//reach center of screen
+//                if (Math.abs(y-formationY)>6) {
+//                    y -= speed;
+//                }
+//                if (Point.distance(x,y,formationX,y)>speed/2) {
+//                    if (x >formationX) {
+//                        x -= speed;
+//                    } else {
+//                        x += speed;
+//                    }
+//                }
+//            }
         }else if (attacking){
 
         }

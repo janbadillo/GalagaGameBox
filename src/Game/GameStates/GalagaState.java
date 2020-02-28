@@ -4,6 +4,7 @@ import Game.Galaga.Entities.BaseEntity;
 import Game.Galaga.Entities.EnemyBee;
 import Game.Galaga.Entities.EntityManager;
 import Game.Galaga.Entities.PlayerShip;
+import Game.Galaga.Entities.BeeBoss;
 import Main.Handler;
 import Resources.Animation;
 import Resources.Images;
@@ -22,7 +23,10 @@ public class GalagaState extends State {
     private Animation titleAnimation;
     public int selectPlayers = 1;
     public int startCooldown = 60*3;//seven seconds for the music to finish
-
+	private boolean addEnemies = false, addEnemyfinish = false;
+	private int addEnemycounter = 0, randomSpawn = 80;
+	Random random = new Random();
+	
     public GalagaState(Handler handler){
         super(handler);
         refresh();
@@ -47,24 +51,25 @@ public class GalagaState extends State {
     	return false;
     }
     
-//    public boolean bossOverlap(BaseEntity sprite)
-//    {
-//    
-//    	for(BaseEntity entity: entityManager.entities )
-//		{
-//			if(entity instanceof BeeBoss && sprite instanceof BeeBoss)
-//			{
-//				boolean check = ((BeeBoss) entity).get_pos().contentEquals(((BeeBoss) sprite).get_pos());
-//				if(check)
-//					return true;
-//			}
-//		}
-//    	return false;
-//    }
+    public boolean bossOverlap(BaseEntity sprite)
+    {
+    
+    	for(BaseEntity entity: entityManager.entities )
+		{
+			if(entity instanceof BeeBoss && sprite instanceof BeeBoss)
+			{
+				boolean check = ((BeeBoss) entity).get_pos().contentEquals(((BeeBoss) sprite).get_pos());
+				if(check)
+					return true;
+			}
+		}
+    	return false;
+    }
     /////////^^^^^^^^^^^^^^^^^^^^^^ADDED^^^^^^^^^^^^^^^^^^^^^///////
     
     @Override
     public void tick() {
+    	
     	if (handler.getGameover()) {
     		entityManager.entities.clear();
     		handler.getScoreManager().setGalagaCurrentScore(0);
@@ -73,16 +78,22 @@ public class GalagaState extends State {
     	}
     	
         if (Mode.equals("Stage")){
+        	addEnemycounter ++;
+        	randomSpawn--;
+        	if ((addEnemycounter >= 20 && !addEnemyfinish) || randomSpawn <= 0) {
+        		addEnemies = true;
+        		randomSpawn = random.nextInt(60*5) + 60*5;
+        		addEnemycounter = 0;
+        	}
         	if (handler.getScoreManager().getGalagaCurrentScore() > handler.getScoreManager().getGalagaHighScore()) {
         		handler.getScoreManager().setGalagaHighScore(handler.getScoreManager().getGalagaCurrentScore());
         	}
             if (startCooldown<=0) {
                 entityManager.tick();
                 ////////////////ADDED THIS///////////////////////////    
-                if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_P)){ // Waits for P to be pressed for Bee to spawn
+                if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_P) || addEnemies){ // Waits for P to be pressed for Bee to spawn
 
                 	EnemyBee test;
-                	Random random = new Random();
                 	int col[] = {0,1,2,3,4,5,6,7};
                 	int row[] = {3,4};
                 	do
@@ -102,39 +113,43 @@ public class GalagaState extends State {
     		        			}
     		        		}
     		        		if (counter >= 16) {
+    		        			addEnemyfinish = true;
     		        			break;
     		        		}
     		        	}
-                	} while(beeOverlap(test)); // must fix this loop
+                	} while(beeOverlap(test));
+                	addEnemies = false;
                 }
                 
-//                if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_O)){
-//                	Random random = new Random();
-//                	int col[] = {0,1,2,3,4,5,6,7};
-//                	int row[] = {0,1,2};
-//                	BeeBoss test; 
-//                	do
-//                	{
-//    	            	int rando_col = random.nextInt(8);
-//    	            	int rando_row = random.nextInt(2);
-//    	            	test = new EnemyBee(1,1,50,50,handler,row[rando_row],col[rando_col]); 
-//    		        	if(!bossOverlap(test)) {
-//    		            	entityManager.entities.add(test);
-//    		            	break;
-//    		        	} else {
-//    		        		int counter = 0;
-//    		        		for(BaseEntity entity: entityManager.entities ){
-//    		        			
-//    		        			if (entity instanceof EnemyBee) {
-//    		        				counter ++;
-//    		        			}
-//    		        		}
-//    		        		if (counter >= 16) {
-//    		        			break;
-//    		        		}
-//    		        	}
-//                	} while(bossOverlap(test));
-//                }
+                
+                // ///////New enemy ////////
+                if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_O)){
+                	Random random = new Random();
+                	int col[] = {1,2,3,4,5,6};
+                	int row[] = {1,2};
+                	BeeBoss test; 
+                	do
+                	{
+    	            	int rando_col = random.nextInt(6);
+    	            	int rando_row = random.nextInt(2);
+    	            	test = new BeeBoss(1,1,50,50,handler,row[rando_row],col[rando_col]); 
+    		        	if(!bossOverlap(test)) {
+    		            	entityManager.entities.add(test);
+    		            	break;
+    		        	} else {
+    		        		int counter = 0;
+    		        		for(BaseEntity entity: entityManager.entities ){
+    		        			
+    		        			if (entity instanceof BeeBoss) {
+    		        				counter ++;
+    		        			}
+    		        		}
+    		        		if (counter >= 12) {
+    		        			break;
+    		        		}
+    		        	}
+                	} while(bossOverlap(test));
+                }
                 ///////////////////////////////////////////////////////////////    
                 
             }else{
@@ -149,7 +164,9 @@ public class GalagaState extends State {
                 selectPlayers=2;
             }
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ENTER)){
+            	addEnemyfinish = false;
                 Mode = "Stage";
+                addEnemies  = true;
                 handler.getMusicHandler().playEffect("Galaga.wav");
 
             }

@@ -1,6 +1,6 @@
 package Game.Galaga.Entities;
 
-import Game.GameStates.GalagaState;
+//import Game.GameStates.GalagaState;
 import Main.Handler;
 import Resources.Animation;
 import Resources.Images;
@@ -13,7 +13,8 @@ import java.awt.image.BufferedImage;
  * Created by AlexVR on 1/25/2020
  */
 public class PlayerShip extends BaseEntity{
-
+	
+	EntityManager enemies;
     private int health = 3,attackCooldown = 5,speed =6,destroyedCoolDown = 60*3, gameoverCooldown = 60*4;
     private boolean attacking = false, destroyed = false;
     private Animation deathAnimation;
@@ -24,10 +25,27 @@ public class PlayerShip extends BaseEntity{
         deathAnimation = new Animation(256,Images.galagaPlayerDeath);
 
     }
+     
+     public int getxPosition() {
+    	 return x;
+     }
+     public int getyPosition() {
+
+    	 return y;
+     }
+     
 
     @Override
     public void tick() {
         super.tick();
+        for (BaseEntity enemy : enemies.entities) {
+            if (enemy instanceof EnemyLaser) {
+            	if (enemy.bounds.intersects(this.bounds)) {
+                    destroyed = true;  
+                }
+            }
+            
+        }
    
         if (destroyed){
             if (destroyedCoolDown<=0){
@@ -60,6 +78,7 @@ public class PlayerShip extends BaseEntity{
                 		break;
                 	}
                 }
+                
                 if (lasercount < 2) {
                 	handler.getMusicHandler().playEffect("laser.wav");
                     attackCooldown = 5;
@@ -67,6 +86,7 @@ public class PlayerShip extends BaseEntity{
                     handler.getGalagaState().entityManager.entities.add(new PlayerLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
                     
                 }
+                
                 //handler.getGalagaState().entityManager.entities.add(new PlayerLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
 
             }

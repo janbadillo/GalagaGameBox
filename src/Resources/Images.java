@@ -26,6 +26,7 @@ public class Images {
     public static BufferedImage[] galagaPlayerDeath;
     public static BufferedImage[] galagaEnemyDeath;
     public static BufferedImage[] galagaEnemyBee;
+    public static BufferedImage[] galagaBeeBoss;
 
     public static BufferedImage galagaImageSheet;
     public SpriteSheet galagaSpriteSheet;
@@ -41,6 +42,7 @@ public class Images {
         galagaPlayerDeath = new BufferedImage[8];
         galagaEnemyDeath = new BufferedImage[5];
         galagaEnemyBee = new BufferedImage[8];
+        galagaBeeBoss = new BufferedImage[2];
 
 
         try {
@@ -103,6 +105,8 @@ public class Images {
             galagaEnemyBee[6] = galagaSpriteSheet.crop(42,178,12,11);
             galagaEnemyBee[7] = galagaSpriteSheet.crop(19,177,10,13);
 
+            galagaBeeBoss[0] = galagaSpriteSheet.crop(185,128,14,14);
+            galagaBeeBoss[1] = galagaSpriteSheet.crop(161,127,14,15);
 
             galagaPlayerLaser = galagaSpriteSheet.crop(365 ,219,3,8);
 
