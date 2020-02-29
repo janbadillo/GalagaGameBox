@@ -13,9 +13,9 @@ public class EnemyBee extends BaseEntity {
     boolean justSpawned=true,attacking=false, positioned=false,hit=false,centered = false;
     Animation idle,turn90Left;
     int spawnPos;//0 is left 1 is top, 2 is right, 3 is bottom
-    int formationX,formationY,speed,centerCoolDown=30;//The enemy stay in the center for a bit.
+    int formationX,formationY,speed,centerCoolDown=20;//The enemy stay in the center for a bit.
     int timeAlive=0;
-    int randomAttack = random.nextInt(60*40) + 60*10;
+    int randomAttack = random.nextInt(60*25) + 60*10;
     int attackX, attackY;
     
     public EnemyBee(int x, int y, int width, int height, Handler handler,int row, int col) {
@@ -56,35 +56,34 @@ public class EnemyBee extends BaseEntity {
         bounds.y=y;
     }
     
-    public String get_pos()
-    {
+    public String get_pos() {
     	String x = String.valueOf(this.col);
     	String y = String.valueOf(this.row);
     	return x+y;
     }
     
-    public int getAttackX()
-    {
+    public int getAttackX() {
 		return handler.getGalagaState().entityManager.playerShip.x;
     }
     
-    public int getAttackY()
-    {
+    public int getAttackY() {
 		return handler.getGalagaState().entityManager.playerShip.y;
     }
+    
     @Override
     public void tick() {
         super.tick();
         idle.tick();
-        if (hit){
+        if (hit && !justSpawned){
             if (enemyDeath.end) {
                 remove = true;
                 handler.getScoreManager().setSumScore();
                 return;
             }
             enemyDeath.tick();
+            
         }
-        if (justSpawned){
+        if (justSpawned && !enemyDeath.start){
             if (!centered && Point.distance(x,y,handler.getWidth()/2,handler.getHeight()/2)>speed + 1){//reach center of screen
                 switch (spawnPos){
                     case 0://left
@@ -155,6 +154,7 @@ public class EnemyBee extends BaseEntity {
             }
         }if (positioned){
         	
+        	justSpawned = false;
            	// In a random amount of time, change attacking to true
         	randomAttack--;
         	if (randomAttack <= 0) {
@@ -163,15 +163,18 @@ public class EnemyBee extends BaseEntity {
         		attackX = handler.getGalagaState().entityManager.playerShip.x;
         		attackY = handler.getGalagaState().entityManager.playerShip.y;
         		positioned = false;
-        		justSpawned = false;
+        		
         	}
         	
-        }if (attacking){
+        }if (attacking && !enemyDeath.start){
 
         	// Move towards enemy position
         	if (Point.distance(x, y, attackX, attackY) > speed) {
                 if (Math.abs(y - attackY) > 6) {
                     y += speed;
+                } else {
+            		attacking = false;
+            		justSpawned = true;
                 }
                 if (Point.distance(x,y,attackX,y)>speed/2) {
                     if (x > attackX) {

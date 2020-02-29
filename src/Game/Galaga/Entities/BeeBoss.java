@@ -14,12 +14,11 @@ public class BeeBoss extends BaseEntity {
     boolean justSpawned=true,attacking=false, positioned=false,hit=false,centered = false;
     Animation idle,turn90Left;
     int spawnPos;//0 is left 1 is top, 2 is right, 3 is bottom
-    int formationX,formationY,speed,centerCoolDown=30;//The enemy stay in the center for a bit.
+    int formationX,formationY,speed,centerCoolDown=20;//The enemy stay in the center for a bit.
     int timeAlive=0;
     Random random = new Random();
-    int randomshot = 0;
-    int randomfired = 0;
-    boolean gamesruning = true;
+    int randomshot = random.nextInt(60*5) + 60*5;
+    
     public BeeBoss(int x, int y, int width, int height, Handler handler,int row, int col) {
         super(x, y, width, height, Images.galagaBeeBoss[0], handler);
         this.row = row;
@@ -71,14 +70,14 @@ public class BeeBoss extends BaseEntity {
         idle.tick();
         //handler.getGalagaState().entityManager.entities.add(new EnemyLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
         if (hit){
-            if (enemyDeath.end) {
+            if (enemyDeath.end && !justSpawned) {
                 remove = true;
                 handler.getScoreManager().setSumScore();
                 return;
             }
             enemyDeath.tick();
         }
-        if (justSpawned){
+        if (justSpawned && !enemyDeath.start){
             if (!centered && Point.distance(x,y,handler.getWidth()/2,handler.getHeight()/2)>speed + 1){//reach center of screen
                 switch (spawnPos){
                     case 0://left
@@ -150,20 +149,19 @@ public class BeeBoss extends BaseEntity {
             	justSpawned = false;
             }
         }else if (positioned){
-      
-//     	if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ENTER)) {
-        	if (gamesruning == true) {
-     					randomshot = random.nextInt(60*100);
-     					if (randomshot <= 5) {
-     						handler.getGalagaState().entityManager.Adder.add(new EnemyLaser(this.x + (width / 2), this.y + 3, width / 5, height / 2, Images.galagaEnemyLaser, handler, handler.getGalagaState().entityManager));
-     					}
-     				}
-     				//handler.getGalagaState().entityManager.Adder.add(new EnemyLaser(this.x + (width / 2), this.y + 3, width / 5, height / 2, Images.galagaEnemyLaser, handler, handler.getGalagaState().entityManager));
-     			
-        	
-        	//handler.getGalagaState().entityManager.entities.add(new EnemyLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
-        }else if (attacking){
+        	justSpawned = false;
+			randomshot --;
+			if (randomshot <= 0) {
+				handler.getGalagaState().entityManager.Adder.add(new EnemyLaser(this.x + (width / 2), this.y + 3, width / 5, height / 2, Images.galagaEnemyLaser, handler, handler.getGalagaState().entityManager));
+				attacking = true;
+				positioned = false;
+			}
+			
 
+        }else if (attacking){
+        	randomshot = random.nextInt(60*5) + 60*5;
+        	attacking = false;
+        	positioned = true;
         }
         bounds.x=x;
         bounds.y=y;

@@ -32,7 +32,9 @@ public class PlayerLaser extends BaseEntity {
                     continue;
                 }
                 if (enemy.bounds.intersects(bounds)) {
-                    enemy.damage(this);  
+                	if (enemy.enemyDeath.start)
+                    	continue;
+                    enemy.damage(this);
                 }
             }
         }

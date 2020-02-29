@@ -24,7 +24,7 @@ public class GalagaState extends State {
     public int selectPlayers = 1;
     public int startCooldown = 60*3;//seven seconds for the music to finish
 	private boolean addEnemies = false, addEnemyfinish = false, addEnemies2 = false, addEnemyFinish2 = false;
-	private int addEnemycounter = 0, randomSpawn = 80, randomSpawn2= 80;
+	private int addEnemycounter = 0, addEnemycounter2 = 0, randomSpawn = 80, randomSpawn2= 80;
 	Random random = new Random();
 	
     public GalagaState(Handler handler){
@@ -79,15 +79,21 @@ public class GalagaState extends State {
     	
         if (Mode.equals("Stage")){
         	addEnemycounter ++;
+        	addEnemycounter2 ++;
         	randomSpawn--;
         	randomSpawn2--;
-        	if ((addEnemycounter >= 20 && (!addEnemyfinish || !addEnemyFinish2)) || randomSpawn <= 0 || randomSpawn2 <=0) {
+        	if (addEnemycounter >= 20 && !addEnemyfinish || randomSpawn <= 0) {
         		addEnemies = true;
-        		addEnemies2 = true;
-        		randomSpawn = random.nextInt(60*5) + 60*5;
-        		randomSpawn2 = random.nextInt(60*5) + 60*5;
+        		randomSpawn = random.nextInt(60*5) + 60*3;
         		addEnemycounter = 0;
         	}
+        	
+        	if (addEnemycounter2 >= 20 && !addEnemyFinish2 || randomSpawn2 <=0) {
+        		addEnemies2 = true;
+        		randomSpawn2 = random.nextInt(60*5) + 60*5;
+        		addEnemycounter2 = 0;
+        	}
+        	
         	if (handler.getScoreManager().getGalagaCurrentScore() > handler.getScoreManager().getGalagaHighScore()) {
         		handler.getScoreManager().setGalagaHighScore(handler.getScoreManager().getGalagaCurrentScore());
         	}
@@ -125,7 +131,7 @@ public class GalagaState extends State {
                 }
                 
                 
-                // ///////New enemy ////////
+                /////////New enemy ////////
                 if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_O) || addEnemies2){
                 	Random random = new Random();
                 	int col[] = {1,2,3,4,5,6};

@@ -141,7 +141,11 @@ public class PlayerShip extends BaseEntity{
         if (damageSource instanceof PlayerLaser){
             return;
         }
-        
+        if (damageSource instanceof EnemyBee){
+        	if (damageSource.enemyDeath.start) {
+        		return;
+        	}
+        }
         
         if(GodModeCount >= 0) {
         	return;
