@@ -69,8 +69,8 @@ public class BeeBoss extends BaseEntity {
         super.tick();
         idle.tick();
         //handler.getGalagaState().entityManager.entities.add(new EnemyLaser(this.x + (width / 2), this.y - 3, width / 5, height / 2, Images.galagaPlayerLaser, handler, handler.getGalagaState().entityManager));
-        if (hit){
-            if (enemyDeath.end && !justSpawned) {
+        if (hit && !justSpawned){
+            if (enemyDeath.end) {
                 remove = true;
                 handler.getScoreManager().setSumScore();
                 return;
