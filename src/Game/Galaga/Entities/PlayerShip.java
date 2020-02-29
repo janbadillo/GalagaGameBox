@@ -16,7 +16,7 @@ public class PlayerShip extends BaseEntity{
 	
 	EntityManager enemies;
     private int health = 3,attackCooldown = 5,speed =6,destroyedCoolDown = 60*3,
-    		    gameoverCooldown = 60*4, GodModeCount = 60*10;
+    		    gameoverCooldown = 60*4, GodModeCount = 60*7;
     private boolean attacking = false, destroyed = false;
     private Animation deathAnimation;
 
