@@ -81,6 +81,7 @@ public class Images {
             galagaSpriteSheet = new SpriteSheet(galagaImageSheet);
 
             galagaPlayer[0] = galagaSpriteSheet.crop(160,55,15,16);
+            galagaPlayer[1] = galagaSpriteSheet.crop(160,79,15,16);
 
             galagaPlayerDeath[0] = galagaSpriteSheet.crop(209,48,32,32);
             galagaPlayerDeath[1] = galagaSpriteSheet.crop(209,48,32,32);

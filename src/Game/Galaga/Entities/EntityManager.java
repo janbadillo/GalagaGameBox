@@ -19,6 +19,13 @@ public class EntityManager {
         Adder = new ArrayList<>();
     }
     
+    public int getxPosition() {
+   	 return playerShip.x;
+    }
+    public int getyPosition() {
+   	 return playerShip.y;
+    }
+    
     public void tick(){
         playerShip.tick();
         ArrayList<BaseEntity> toRemove = new ArrayList<>();

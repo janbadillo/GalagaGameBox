@@ -4,6 +4,7 @@ package Game.Galaga.Entities;
 import Main.Handler;
 import Resources.Animation;
 import Resources.Images;
+import Game.Galaga.Entities.EntityManager;
 //import Game.Galaga.Entities.PlayerShip;
 
 import java.awt.*;
@@ -16,6 +17,9 @@ public class EnemyBee extends BaseEntity {
     int spawnPos;//0 is left 1 is top, 2 is right, 3 is bottom
     int formationX,formationY,speed,centerCoolDown=60;//The enemy stay in the center for a bit.
     int timeAlive=0;
+    int randomAttack = random.nextInt(60*10) + 60*5;
+    int attackX, attackY;
+    
     public EnemyBee(int x, int y, int width, int height, Handler handler,int row, int col) {
         super(x, y, width, height, Images.galagaEnemyBee[0], handler);
         this.row = row;
@@ -60,7 +64,16 @@ public class EnemyBee extends BaseEntity {
     	String y = String.valueOf(this.row);
     	return x+y;
     }
-
+    
+    public int getAttackX()
+    {
+		return handler.getGalagaState().entityManager.playerShip.x;
+    }
+    
+    public int getAttackY()
+    {
+		return handler.getGalagaState().entityManager.playerShip.y;
+    }
     @Override
     public void tick() {
         super.tick();
@@ -134,28 +147,48 @@ public class EnemyBee extends BaseEntity {
                                 x += speed;
                             }
                         }
+                    }else {
+                    	positioned = true;
                     }
                 }else{
                     centerCoolDown--;
                 }
 
             }
-        }else if (positioned){
-//        	if (Point.distance(x, y,, formationY) > speed) {//reach center of screen
-//                if (Math.abs(y-formationY)>6) {
-//                    y -= speed;
-//                }
-//                if (Point.distance(x,y,formationX,y)>speed/2) {
-//                    if (x >formationX) {
-//                        x -= speed;
-//                    } else {
-//                        x += speed;
-//                    }
-//                }
-//            }
-        }else if (attacking){
+        }if (positioned){
+        	
+           	// In a random amount of time, change attacking to true
+        	randomAttack--;
+        	if (randomAttack <= 0) {
+        		attacking = true;
+        		randomAttack = random.nextInt(60*10) + 60*5;
+        		attackX = handler.getGalagaState().entityManager.playerShip.x;
+        		attackY = handler.getGalagaState().entityManager.playerShip.y;
+        		positioned = false;
+        		justSpawned = false;
+        	}
+        	
+        }if (attacking){
 
-        }
+        	// Move towards enemy position
+        	if (Point.distance(x, y, attackX, attackY) > speed) {
+                if (Math.abs(y - attackY) > 6) {
+                    y += speed;
+                }
+                if (Point.distance(x,y,attackX,y)>speed/2) {
+                    if (x > attackX) {
+                        x -= speed;
+                    } else {
+                        x += speed;
+                    }
+                }    
+            }
+        	else { 
+        		attacking = false;
+        		justSpawned = true;
+        		
+        	}
+        }       
         bounds.x=x;
         bounds.y=y;
     }
@@ -176,9 +209,6 @@ public class EnemyBee extends BaseEntity {
     @Override
     public void damage(BaseEntity damageSource) {
         super.damage(damageSource);
-        if (damageSource instanceof EnemyLaser){
-            return;
-        }
         if (damageSource instanceof PlayerLaser){
             hit=true;
             handler.getMusicHandler().playEffect("explosion.wav");

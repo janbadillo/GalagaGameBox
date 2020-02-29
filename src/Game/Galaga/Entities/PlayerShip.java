@@ -15,7 +15,8 @@ import java.awt.image.BufferedImage;
 public class PlayerShip extends BaseEntity{
 	
 	EntityManager enemies;
-    private int health = 3,attackCooldown = 5,speed =6,destroyedCoolDown = 60*3, gameoverCooldown = 60*4;
+    private int health = 3,attackCooldown = 5,speed =6,destroyedCoolDown = 60*3,
+    		    gameoverCooldown = 60*4, GodModeCount = 60*10;
     private boolean attacking = false, destroyed = false;
     private Animation deathAnimation;
 
@@ -26,33 +27,23 @@ public class PlayerShip extends BaseEntity{
 
     }
      
-     public int getxPosition() {
-    	 return x;
-     }
-     public int getyPosition() {
-
-    	 return y;
-     }
-     
 
     @Override
     public void tick() {
         super.tick();
-        
-//        for (BaseEntity enemy : enemies.entities) {
-//            if (enemy instanceof EnemyLaser) {
-//            	if (enemy.bounds.intersects(this.bounds)) {
-//                    destroyed = true;
-//                    break;
-//                }
-//            }
-//            
-//        }
-   
+        GodModeCount--;
+        if(GodModeCount >= 0) {
+        	this.sprite = Images.galagaPlayer[1];
+        } else {
+        	this.sprite = Images.galagaPlayer[0];
+        }
+        	
         if (destroyed){
+        	
             if (destroyedCoolDown<=0){
                 destroyedCoolDown=60*3;
                 destroyed=false;
+                GodModeCount = 60*3;
                 deathAnimation.reset();
                 bounds.x=x;
             }else{
@@ -150,11 +141,19 @@ public class PlayerShip extends BaseEntity{
         if (damageSource instanceof PlayerLaser){
             return;
         }
-        health--;
-        destroyed = true;
-        handler.getMusicHandler().playEffect("explosion.wav");
+        
+        
+        if(GodModeCount >= 0) {
+        	return;
+        }else {
+        	health--;
+            destroyed = true;
+            handler.getMusicHandler().playEffect("explosion.wav");
 
-        bounds.x = -10;
+            bounds.x = -10;
+        }
+        
+        
     }
 
     public int getHealth() {
