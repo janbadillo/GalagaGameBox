@@ -4,8 +4,6 @@ package Game.Galaga.Entities;
 import Main.Handler;
 import Resources.Animation;
 import Resources.Images;
-import Game.Galaga.Entities.EntityManager;
-//import Game.Galaga.Entities.PlayerShip;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,9 +13,9 @@ public class EnemyBee extends BaseEntity {
     boolean justSpawned=true,attacking=false, positioned=false,hit=false,centered = false;
     Animation idle,turn90Left;
     int spawnPos;//0 is left 1 is top, 2 is right, 3 is bottom
-    int formationX,formationY,speed,centerCoolDown=60;//The enemy stay in the center for a bit.
+    int formationX,formationY,speed,centerCoolDown=30;//The enemy stay in the center for a bit.
     int timeAlive=0;
-    int randomAttack = random.nextInt(60*10) + 60*5;
+    int randomAttack = random.nextInt(60*40) + 60*10;
     int attackX, attackY;
     
     public EnemyBee(int x, int y, int width, int height, Handler handler,int row, int col) {
@@ -35,7 +33,7 @@ public class EnemyBee extends BaseEntity {
         formationY=(row*(handler.getHeight()/10))+8;
     }
     private void spawn() {
-        spawnPos = random.nextInt(4);
+        spawnPos = random.nextInt(3);
         switch (spawnPos){
             case 0://left
                 x = (handler.getWidth()/4)-width;
@@ -49,10 +47,10 @@ public class EnemyBee extends BaseEntity {
                 x = (handler.getWidth()/2)+ width + (handler.getWidth()/4);
                 y = random.nextInt(handler.getHeight()-handler.getHeight()/8);
                 break;
-            case 3://down
-                x = random.nextInt((handler.getWidth()/2))+handler.getWidth()/4;
-                y = handler.getHeight()+height;
-                break;
+//            case 3://down
+//                x = random.nextInt((handler.getWidth()/2))+handler.getWidth()/4;
+//                y = handler.getHeight()+height;
+//                break;
         }
         bounds.x=x;
         bounds.y=y;
